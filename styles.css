@@ -15,6 +15,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 92px;
 }
 
 body {
@@ -24,6 +25,12 @@ body {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 17px;
   line-height: 1.65;
+}
+
+main p,
+main li {
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 a {
@@ -49,8 +56,13 @@ main,
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
   padding: 28px 0 20px;
   border-bottom: 1px solid var(--line);
+  background: rgba(247, 246, 242, 0.95);
+  backdrop-filter: blur(10px);
 }
 
 .site-title {
@@ -58,6 +70,13 @@ main,
   font-size: 21px;
   font-weight: 700;
   text-decoration: none;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.site-title:hover,
+.site-title:focus {
+  color: var(--accent-dark);
+  transform: translateY(-1px);
 }
 
 .site-nav {
@@ -71,11 +90,39 @@ main,
 .site-nav a {
   color: var(--muted);
   text-decoration: none;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 160ms ease, transform 160ms ease;
 }
 
 .site-nav a:hover,
 .site-nav a:focus {
   color: var(--text);
+  transform: translateY(-1px);
+}
+
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--accent-dark);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 160ms ease;
+}
+
+.site-nav a:hover::after,
+.site-nav a:focus::after {
+  transform: scaleX(1);
+}
+
+.site-title:focus-visible,
+.site-nav a:focus-visible {
+  outline: 2px solid #6f8f9b;
+  outline-offset: 4px;
 }
 
 .intro {
@@ -89,14 +136,16 @@ main,
 .profile-photo {
   width: 180px;
   aspect-ratio: 3 / 4;
-  display: grid;
-  place-items: center;
   border: 1px solid var(--line);
   background: var(--surface);
-  color: var(--muted);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
-  letter-spacing: 0;
+  overflow: hidden;
+}
+
+.profile-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .eyebrow {
@@ -141,7 +190,7 @@ h3 {
 .links {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   margin-top: 22px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
@@ -150,17 +199,31 @@ h3 {
 .links a {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   min-height: 34px;
-  padding: 5px 11px;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--accent-dark);
+  padding: 7px 14px;
+  border: 1px solid #274a58;
+  border-radius: 999px;
+  background: #253f4a;
+  color: #ffffff;
+  box-shadow: 0 2px 7px rgba(31, 68, 84, 0.15);
   text-decoration: none;
+  text-align: center;
+  transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
 .links a:hover,
 .links a:focus {
-  border-color: var(--accent);
+  border-color: #172f39;
+  background: #172f39;
+  box-shadow: 0 5px 14px rgba(31, 68, 84, 0.24);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.links a:focus-visible {
+  outline: 2px solid #6f8f9b;
+  outline-offset: 3px;
 }
 
 .section {
@@ -215,16 +278,28 @@ li {
 
 .timeline {
   display: grid;
-  gap: 22px;
+  gap: 14px;
 }
 
 .timeline article {
-  padding-left: 18px;
+  padding-left: 16px;
   border-left: 2px solid var(--line);
 }
 
-.date {
+.timeline article p {
   margin-bottom: 4px;
+}
+
+.timeline article h3 {
+  margin-bottom: 4px;
+}
+
+.timeline.compact {
+  gap: 0;
+}
+
+.date {
+  margin-bottom: 2px;
   color: var(--muted);
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
